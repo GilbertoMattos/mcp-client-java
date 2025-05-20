@@ -4,33 +4,55 @@ Este é um cliente MCP (Model Context Protocol) que permite aos usuários realiz
 
 ## Funcionalidades
 
-- Interface moderna para solicitações via texto
+- API REST para solicitações via texto
 - Processamento de texto usando LLM através do servidor MCP
-- Respostas em tempo real com indicador de carregamento
-- Design responsivo que funciona em diferentes dispositivos
+- Integração com Anthropic Claude via Spring AI
+- Suporte a ferramentas (tools) via ToolCallbackProvider
 
 ## Tecnologias Utilizadas
 
-- Spring Boot 3.4.5
-- Spring AI (MCP Client)
-- JTE (Java Template Engine)
-- HTML/CSS/JavaScript
+- Spring Boot 3.5.0-SNAPSHOT
+- Spring AI 1.0.0-RC1 (MCP Client e Anthropic)
+- Lombok
+- Spring Web
 
 ## Configuração
 
-A aplicação está configurada para se conectar a um servidor MCP em `http://localhost:8080`. Você pode alterar esta configuração no arquivo `application.properties`:
+A aplicação está configurada para se conectar a um servidor MCP em `http://localhost:8080`. Você pode alterar esta configuração no arquivo `application.yml`:
 
-```properties
-spring.ai.mcp.client.base-url=http://localhost:8080
-spring.ai.mcp.client.default-options.temperature=0.7
-spring.ai.mcp.client.default-options.max-tokens=2000
-spring.ai.mcp.client.default-options.model=gpt-3.5-turbo
+```yaml
+spring:
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:your-api-key}
+      chat:
+        options:
+          temperature: 0.8
+          max-tokens: 5000
+    model:
+      chat: anthropic
+    mcp:
+      client:
+        enabled: true
+        name: spring-ai-mcp-client
+        version: 1.0.0
+        request-timeout: 60s
+        type: sync
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8080
+              sse-endpoint: /sse
+        root-change-notification: true
+        toolcallback:
+          enabled: true
 ```
 
-A aplicação roda na porta 8081 para evitar conflitos com o servidor MCP:
+A aplicação roda na porta 8088 para evitar conflitos com o servidor MCP:
 
-```properties
-server.port=8081
+```yaml
+server:
+  port: 8088
 ```
 
 ## Executando a Aplicação
@@ -41,21 +63,23 @@ Para executar a aplicação, use o seguinte comando:
 ./mvnw spring-boot:run
 ```
 
-Acesse a aplicação em `http://localhost:8081`
+Acesse a API em `http://localhost:8088/chat?request=sua-mensagem`
 
 ## Estrutura do Projeto
 
-- `src/main/java/br/com/tecnosys/mcpclientjava/controller/ChatController.java`: Controlador para lidar com as requisições web
-- `src/main/java/br/com/tecnosys/mcpclientjava/service/ChatService.java`: Serviço para processar mensagens usando o cliente MCP
-- `src/main/java/br/com/tecnosys/mcpclientjava/config/JteConfig.java`: Configuração do motor de templates JTE
-- `src/main/jte/index.jte`: Template JTE para a página principal
-- `src/main/resources/static/css/styles.css`: Estilos CSS para a interface
-- `src/main/resources/static/js/chat.js`: JavaScript para a funcionalidade do chat
-- `src/main/resources/application.properties`: Configurações da aplicação
+- `src/main/java/br/com/tecnosys/mcpclientjava/McpClientJavaApplication.java`: Classe principal da aplicação
+- `src/main/java/br/com/tecnosys/mcpclientjava/controller/ChatController.java`: Controlador REST para lidar com as requisições de chat
+- `src/main/java/br/com/tecnosys/mcpclientjava/service/ChatService.java`: Serviço para processar mensagens usando o cliente MCP e Spring AI
+- `src/main/resources/application.yml`: Configurações da aplicação
 
 ## Como Usar
 
-1. Acesse a aplicação em `http://localhost:8081`
-2. Digite sua mensagem na caixa de texto
-3. Clique em "Enviar" ou pressione Enter
-4. Aguarde a resposta do servidor MCP
+1. Faça uma requisição GET para `http://localhost:8088/chat?request=sua-mensagem`
+2. A API processará a mensagem usando o modelo Anthropic via MCP
+3. A resposta será retornada como texto simples
+
+## Requisitos
+
+- Java 17 ou superior
+- Maven 3.6 ou superior
+- Conexão com servidor MCP (por padrão em localhost:8080)

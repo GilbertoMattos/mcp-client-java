@@ -3,7 +3,7 @@ spring:
     name: @project.artifactId@
   ai:
     anthropic:
-      api-key: ${ANTHROPIC_API_KEY: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}
+      api-key: ${ANTHROPIC_API_KEY}
       chat:
         options:
           temperature: 0.8
