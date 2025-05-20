@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: @project.artifactId@
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY: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}
+      chat:
+        options:
+          temperature: 0.8
+          max-tokens: 5000
+    model:
+      chat: anthropic
+    mcp:
+      client:
+        enabled: true
+        name: spring-ai-mcp-client
+        version: 1.0.0
+        request-timeout: 60s
+        type: sync
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8080
+              sse-endpoint: /sse
+        root-change-notification: true
+        toolcallback:
+          enabled: true
+logging:
+  level:
+    web: debug
+    org.springframework.ai.mcp: TRACE
+    io.modelcontextprotocol:
+      client: WARN
+      spec: WARN
+server:
+  port: 8088
