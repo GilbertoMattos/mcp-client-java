@@ -34,3 +34,6 @@ logging:
       spec: WARN
 server:
   port: 8088
+gg:
+  jte:
+    development-mode: true
