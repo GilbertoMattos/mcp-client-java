@@ -2,14 +2,12 @@ spring:
   application:
     name: @project.artifactId@
   ai:
-    anthropic:
-      api-key: ${ANTHROPIC_API_KEY}
+    openai:
+      api-key: ${OPEN_AI_API_KEY}
       chat:
         options:
-          temperature: 0.8
-          max-tokens: 5000
-    model:
-      chat: anthropic
+          temperature: 0.5
+          model: gpt-4o
     mcp:
       client:
         enabled: true

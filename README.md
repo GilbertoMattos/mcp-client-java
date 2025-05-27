@@ -83,3 +83,46 @@ Acesse a API em `http://localhost:8088/chat?request=sua-mensagem`
 - Java 17 ou superior
 - Maven 3.6 ou superior
 - Conexão com servidor MCP (por padrão em localhost:8080)
+- Docker e Docker Compose (para executar o Open WebUI)
+
+## Docker Compose para Open WebUI
+
+Este projeto inclui um arquivo `docker-compose.yml` para facilitar a instalação e execução do Open WebUI, uma interface web para interagir com LLMs.
+
+### Pré-requisitos
+
+- Docker
+- Docker Compose
+
+### Como executar o Open WebUI
+
+1. Certifique-se de que o Docker e o Docker Compose estão instalados em seu sistema
+2. Configure a variável de ambiente `OPEN_AI_API_KEY` com sua chave de API do OpenAI:
+   ```bash
+   export OPEN_AI_API_KEY=sua-chave-api-openai
+   ```
+3. No diretório raiz do projeto, execute:
+   ```bash
+   docker-compose up -d
+   ```
+4. Acesse o Open WebUI em `http://localhost:3000`
+
+### Configurações adicionais
+
+O arquivo `docker-compose.yml` inclui:
+
+- Configuração básica do Open WebUI
+- Persistência de dados usando volumes Docker
+- Configuração opcional para banco de dados PostgreSQL (comentada por padrão)
+
+Para habilitar o banco de dados PostgreSQL ou modificar outras configurações, edite o arquivo `docker-compose.yml` conforme necessário.
+
+Para parar os contêineres:
+```bash
+docker-compose down
+```
+
+Para remover os volumes e dados persistentes:
+```bash
+docker-compose down -v
+```
