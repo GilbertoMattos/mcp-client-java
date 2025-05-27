@@ -126,3 +126,11 @@ Para remover os volumes e dados persistentes:
 ```bash
 docker-compose down -v
 ```
+### Instalando o Ollama 
+   ```bash
+   url -fsSL https://ollama.com/install.sh | sh
+   ```
+
+```bash
+ollama run llama3.1:8b
+```
