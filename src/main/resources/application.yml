@@ -6,7 +6,7 @@ spring:
       api-key: ${ANTHROPIC_API_KEY}
       chat:
         options:
-          temperature: 0.8
+          temperature: 0.0
           max-tokens: 5000
     model:
       chat: anthropic
@@ -19,8 +19,11 @@ spring:
         type: sync
         sse:
           connections:
-            server1:
-              url: http://localhost:8080
+#            server1:
+#              url: http://localhost:8080
+#              sse-endpoint: /sse
+            feedback-cliente:
+              url: http://localhost:8082
               sse-endpoint: /sse
         root-change-notification: true
         toolcallback:

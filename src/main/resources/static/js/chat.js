@@ -3,6 +3,12 @@ const input = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
 const sendButton = document.getElementById("send-button");
 
+// Function to auto-resize textarea
+function autoResizeTextarea() {
+    input.style.height = 'auto';
+    input.style.height = (input.scrollHeight) + 'px';
+}
+
 // Function to format current time
 function getCurrentTime() {
     const now = new Date();
@@ -25,8 +31,8 @@ function addMessage(text, isUser) {
         // For user messages, use textContent to prevent HTML injection
         contentDiv.textContent = text;
     } else {
-        // For AI messages, use innerHTML to render HTML content
-        contentDiv.innerHTML = text;
+        // For AI messages, use marked to convert Markdown to HTML
+        contentDiv.innerHTML = marked.parse(text);
     }
 
     messageDiv.appendChild(contentDiv);
@@ -67,6 +73,9 @@ function sendMessage() {
     addMessage(msg, true);
     input.value = "";
 
+    // Reset textarea height
+    input.style.height = '';
+
     showTypingIndicator();
 
     fetch("/api/chat", {
@@ -87,15 +96,20 @@ function sendMessage() {
 }
 
 // Event listeners
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
+input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
         sendMessage();
     }
 });
 
+// Auto-resize textarea on input
+input.addEventListener("input", autoResizeTextarea);
+
 sendButton.addEventListener("click", sendMessage);
 
-// Focus input on page load
+// Focus input and initialize textarea height on page load
 window.onload = function() {
     input.focus();
+    autoResizeTextarea();
 };

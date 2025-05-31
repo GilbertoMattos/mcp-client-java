@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@title</title>
     <link rel="stylesheet" href="/css/chat.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
@@ -20,7 +21,7 @@
             </div>
 
             <div class="input-container">
-                <input type="text" id="user-input" placeholder="Digite sua mensagem..." autocomplete="off"/>
+                <textarea id="user-input" placeholder="Digite sua mensagem..." rows="1" autocomplete="off"></textarea>
                 <button id="send-button">Enviar</button>
             </div>
         </div>
